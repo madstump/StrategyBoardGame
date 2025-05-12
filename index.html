@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Strategy Board Game Builder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #e8f6f3;
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+        }
+        .question {
+            display: none;
+            margin-bottom: 20px;
+        }
+        .question.active {
+            display: block;
+        }
+        .result {
+            display: none;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #ccc;
+        }
+        button {
+            background-color: #2980b9;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #3498db;
+        }
+    </style>
+</head>
+<body>
+
+<h1>♟️ Strategy Board Game Builder</h1>
+<div class="question active" id="q1">
+    <p><strong>1. What kind of strategy will your game focus on?</strong></p>
+    <button onclick="nextQuestion('area_control')">Controlling land or areas</button><br>
+    <button onclick="nextQuestion('trading')">Trading and managing resources</button><br>
+    <button onclick="nextQuestion('movement_tactics')">Moving and positioning pieces wisely</button>
+</div>
+
+<div class="question" id="q2">
+    <p><strong>2. How should players win?</strong></p>
+    <button onclick="nextQuestion('most_points')">Earn the most points</button><br>
+    <button onclick="nextQuestion('first_goal')">Be the first to complete an objective</button><br>
+    <button onclick="nextQuestion('elimination')">Eliminate other players or take over everything</button>
+</div>
+
+<div class="question" id="q3">
+    <p><strong>3. How much player interaction should there be?</strong></p>
+    <button onclick="nextQuestion('high')">High – players compete directly and block each other</button><br>
+    <button onclick="nextQuestion('medium')">Medium – some conflict but also personal goals</button><br>
+    <button onclick="nextQuestion('low')">Low – each player mainly works on their own plan</button>
+</div>
+
+<div class="question" id="q4">
+    <p><strong>4. What kind of theme would you enjoy?</strong></p>
+    <button onclick="nextQuestion('civilization')">Building civilizations or cities</button><br>
+    <button onclick="nextQuestion('warfare')">Battles, armies, or conquests</button><br>
+    <button onclick="nextQuestion('economic')">Farming, markets, or production</button><br>
+    <button onclick="nextQuestion('abstract')">No real theme – just smart gameplay</button>
+</div>
+
+<div class="question" id="q5">
+    <p><strong>5. What should the board look like?</strong></p>
+    <button onclick="showResult('tiles')">Tile-based or modular (changes each game)</button><br>
+    <button onclick="showResult('fixed')">Fixed layout (same board every time)</button><br>
+    <button onclick="showResult('grid')">Grid-based (movement & positioning focused)</button>
+</div>
+
+<div class="result" id="resultBox">
+    <h2>Your Game Blueprint</h2>
+    <p id="gameSummary"></p>
+    <button onclick="restartQuiz()">🔁 Retry</button>
+</div>
+
+<script>
+    let currentQuestion = 1;
+    let answers = [];
+
+    function nextQuestion(answer) {
+        answers.push(answer);
+        document.getElementById("q" + currentQuestion).classList.remove("active");
+        currentQuestion++;
+        document.getElementById("q" + currentQuestion).classList.add("active");
+    }
+
+    function showResult(finalAnswer) {
+        answers.push(finalAnswer);
+        document.getElementById("q" + currentQuestion).classList.remove("active");
+        document.getElementById("resultBox").style.display = "block";
+        document.getElementById("gameSummary").innerText = generateSummary();
+    }
+
+    function generateSummary() {
+        const strategy = answers[0];
+        const win = answers[1];
+        const interaction = answers[2];
+        const theme = answers[3];
+        const board = answers[4];
+
+        let strategyText = strategy === 'area_control' ? "players control land and fight for space" :
+                          strategy === 'trading' ? "players trade and manage resources to get ahead" :
+                          "movement and positioning are key to winning";
+        let winText = win === 'most_points' ? "the player with the most points wins" :
+                      win === 'first_goal' ? "the first player to complete a goal wins" :
+                      "players try to eliminate others or dominate the board";
+        let interactionText = interaction === 'high' ? "expect high interaction with blocking and competing" :
+                             interaction === 'medium' ? "some player conflict, but also personal progress" :
+                             "players mostly build and progress independently";
+        let themeText = theme === 'civilization' ? "civilization-building or city expansion" :
+                        theme === 'warfare' ? "war and battle strategy" :
+                        theme === 'economic' ? "economic growth and production systems" :
+                        "no specific theme, just deep strategy";
+        let boardText = board === 'tiles' ? "a modular, changing board using tiles or cards" :
+                        board === 'fixed' ? "a static game board used every time" :
+                        "a grid-style layout that focuses on movement and positioning";
+
+        return `Your strategy board game will focus on ${strategyText}. The win condition is: ${winText}. The game has ${interactionText}, with a theme centered on ${themeText}. The board will be ${boardText}. Start by designing a layout and 3 core mechanics based on this summary!`;
+    }
+
+    function restartQuiz() {
+        answers = [];
+        document.getElementById("resultBox").style.display = "none";
+        currentQuestion = 1;
+        document.getElementById("q1").classList.add("active");
+    }
+</script>
+
+</body>
+</html>
